@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BMI Calculator</title>
+  <meta charset="utf-8">
+  <meta name="description" content="BMI Calculator">
+  <meta name="author" content="azhubryd">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>BMI Calculator</h1>
+    <h2>Shiny Application</h2>
+    <p>azhubryd<br/>Coursera student</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Body Mass Index (BMI) is a value derived from the mass (weight) and height of an individual.</p></li>
+<li><p>The index was devised by Adolphe Quetelet from 1830 to 1850 during which time he developed what he called &quot;social physics&quot;.</p></li>
+</ul>
+
+<p>\[ 
+\mathrm{BMI = \frac{mass_{kg}}{height_{m}^{2}} = \frac{mass_{lbs}}{height_{in}^{2}}\times 703} 
+\]</p>
+
+<h2>Input</h2>
+
+<p>Application requires the next inputs from the user:</p>
+
+<ul>
+<li><p>Measurement system: Imperial or metric</p></li>
+<li><p>Mass of a person: <code>kg</code> in metric, <code>lbs</code> in imperial</p></li>
+<li><p>Height of a person: <code>m</code> in metric, <code>&#39;</code> and/or <code>&quot;</code> in imperial</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Transformation of inputs</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>In case of imperial units of height, application accepts different kinds of inputs and tries to transform it, remove errors</p>
+
+<p>Examples of inputs: 5&#39;6&quot;, 5&#39; 6&quot;, 5&#39; 6 &#39;&#39;, 6&#39;, 30&#39;&#39;, 30 &quot;.</p>
+
+<p>Special funtion <code>meters()</code> gets a height in imperial units as a string and outputs the height in meters.</p>
+
+<pre><code class="r">examples &lt;- c(&#39;5\&#39;6&quot;&#39;, &quot;5&#39; 6\&quot;&quot;, &quot;5&#39; 6&#39;&#39;&quot;, &quot;6&#39;&quot;, &quot;30&#39;&#39;&quot;, &#39;30 &quot;&#39;)
+round(sapply(X = examples, FUN = meters, simplify = TRUE),digits = 2)
+</code></pre>
+
+<pre><code>##   5&#39;6&quot;  5&#39; 6&quot; 5&#39; 6&#39;&#39;     6&#39;   30&#39;&#39;   30 &quot; 
+##   1.68   1.68   1.68   1.83   0.76   0.76
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Outputs</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Calculated BMI:</li>
+</ul>
+
+<pre><code class="r">height &lt;- examples[1]
+weight &lt;- 80
+
+BMI &lt;- weight / (meters(height))^2
+round(BMI, digits = 2)
+</code></pre>
+
+<pre><code>## [1] 28.47
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Outputs</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Calculate to which category individual belongs:</li>
+</ul>
+
+<pre><code class="r">categoryBMI(BMI)
+</code></pre>
+
+<pre><code>## [1] &quot;overweight&quot;
+</code></pre>
+
+<ul>
+<li>Calculate a range of recommended weight for given height:</li>
+</ul>
+
+<pre><code class="r">paste0(&#39;Recommended weight for your height is in the range of [&#39;,
+        paste(round(c(18.5, 25) * meters(height)^2, digits = 1)
+              ,collapse = &#39;, &#39;), 
+       &#39;] kg.&#39;)
+</code></pre>
+
+<pre><code>## [1] &quot;Recommended weight for your height is in the range of [52, 70.3] kg.&quot;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Transformation of inputs'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Outputs'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Outputs'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
